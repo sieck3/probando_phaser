@@ -1,0 +1,11 @@
+{
+  "name": "phaser_game",
+  "version": "1.0.0",
+  "description": "Juego creado por un mexa, modo prueba",
+  "main": "]",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Cesar Trevino",
+  "license": "ISC"
+}
