@@ -8,5 +8,17 @@
     "start": "es-dev-server --app-index index.html --node-resolve --watch --open"
   },
   "author": "Cesar Trevino",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sieck3/probando_phaser.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sieck3/probando_phaser/issues"
+  },
+  "homepage": "https://github.com/sieck3/probando_phaser#readme",
+  "dependencies": {
+    "es-dev-server": "^2.1.0",
+    "phaser": "^3.54.0"
+  }
 }
