@@ -3,6 +3,8 @@ let DOWN = false;
 let LEFT = false;
 let RIGHT = false;
 
+let cursors;
+
 export class Game extends Phaser.Scene {
 
     constructor() {
@@ -10,40 +12,27 @@ export class Game extends Phaser.Scene {
     }
 
     preload() {
-
-
         // this.game.load.spritesheet('uniqueKey', 'img/huesos_sprite576×256.png', 256, 576);
         this.load.spritesheet('boy', 'img/huesos_sprite576×256.png', { frameWidth: 64, frameHeight: 64 }, 8);
+        cursors = this.input.keyboard.createCursorKeys();
     }
 
     create() {
-
-
         const boy = this.add.sprite(400, 300, 'boy', 18);
-
 
         this.anims.create({
             key: 'up',
             repeat: -1,
-            frameRate: 8,
+            frameRate: 20,
             frames: this.anims.generateFrameNames('boy', { start: 1, end: 8, zeroPad: 0 })
 
         }
         )
         this.anims.create({
-            key: 'up_stop',
-            repeat: -1,
-            frameRate: 8,
-            frames: this.anims.generateFrameNumbers('boy', { frames: [0] })
-
-        }
-        )
-
-        this.anims.create({
             key: 'left',
             repeat: -1,
-            frameRate: 8,
-            frames: this.anims.generateFrameNumbers('boy', { frames: [9, 10, 11, 12, 13, 14, 15, 16, 17] })
+            frameRate: 20,
+            frames: this.anims.generateFrameNames('boy', { start: 10, end: 17, zeroPad: 0 })
 
         }
         )
@@ -51,83 +40,54 @@ export class Game extends Phaser.Scene {
         this.anims.create({
             key: 'down',
             repeat: -1,
-            frameRate: 8,
-            frames: this.anims.generateFrameNumbers('boy', { frames: [19, 20, 21, 22, 23, 24, 25, 26] })
+            frameRate: 20,
+            frames: this.anims.generateFrameNames('boy', { start: 19, end: 26, zeroPad: 0 })
 
         }
         )
-
 
         this.anims.create({
             key: 'right',
             repeat: -1,
-            frameRate: 8,
-            frames: this.anims.generateFrameNumbers('boy', { frames: [28, 29, 30, 31, 32, 33, 34, 35] })
+            frameRate: 20,
+            frames: this.anims.generateFrameNames('boy', { start: 28, end: 35, zeroPad: 0 })
 
         }
         )
 
-        this.anims.create({
-            key: 'right_stop',
-            repeat: 1,
-            frameRate: 2,
-            frames: this.anims.generateFrameNumbers('boy', { frames: [9] })
+        this.input.keyboard.on('keyup-D', function (event) {
+            boy.anims.stop('right', true);
+        });
+        this.input.keyboard.on('keyup-A', function (event) {
+            boy.anims.stop('left', true);
 
-        }
-        )
+        });
+        this.input.keyboard.on('keyup-S', function (event) {
+            boy.anims.stop('down', true);
+        });
+        this.input.keyboard.on('keyup-W', function (event) {
+            boy.anims.stop('up', true);
 
+        });
 
         this.input.keyboard.on('keydown-A', function (event) {
+            boy.anims.play('left', true);
 
-            RIGHT = true;
-            console.log('key down ', RIGHT)
-            boy.play('left');
-  
         });
 
-        // this.input.keyboard.on('keyup-D', function (event) {
+        this.input.keyboard.on('keydown-W', function (event) {
+            boy.anims.play('up', true);
 
-        //     RIGHT = false;
-        //     console.log('key up ', RIGHT)
-        // });
-
-
-
-        // if (RIGHT) {
-        //     console.log('true')
-        // } else {
-        //     boy.play('right_stop');
-        // }
-        // this.input.keyboard.on('keyup-A', function (event) {
-
-        //     boy.play('right_stop');
-        // });
-
-
-        // this.input.keyboard.on('keyup-W', function (event) {
-
-        //     boy.play('up_stop');
-
-        // });
-
-        this.input.keyboard.on('keyup-W', function (event) {
-            boy.play('up');
         });
+
         this.input.keyboard.on('keydown-S', function (event) {
-            boy.play('down');
+            boy.anims.play('down', true);
         });
+
 
         this.input.keyboard.on('keydown-D', function (event) {
-            boy.play('right');
+            boy.anims.play('right', true);
         });
-
-
-        // let keyObjUP = this.load.input.keyboard.addKey('W');
-        // let keyObjLEFT = this.load.input.keyboard.addKey('A');
-        // let keyObjDOWN = this.load.input.keyboard.addKey('S');
-        // let keyObjRIGHT = this.load.input.keyboard.addKey('D');
-
-
 
     }
 
