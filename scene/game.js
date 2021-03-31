@@ -1,4 +1,5 @@
-let velocidad = 12;
+let velocidad = 15; 
+
 let cursor;
 let boy;
 
@@ -10,11 +11,14 @@ export class Game extends Phaser.Scene {
 
     preload() {
         this.load.spritesheet('boy', 'img/huesos_sprite576×256.png', { frameWidth: 64, frameHeight: 64 }, 8);
+        this.load.image('background', 'img/fondo.png');
     }
 
     create() {
+        this.add.tileSprite(400, 300, 0, 0, 'background').setSize(750, 550)
         boy = this.add.sprite(400, 300, 'boy', 18);
         cursor = this.input.keyboard.createCursorKeys();
+
 
         this.anims.create({
             key: 'up',
@@ -61,17 +65,21 @@ export class Game extends Phaser.Scene {
 
             if (cursor.left.isDown) {
                 boy.anims.play('left', true);
-
+                boy.x -= 3;
+                
             } else if (cursor.right.isDown) {
                 boy.anims.play('right', true);
-
+                boy.x += 3;
+                
             }
-
+            
             if (cursor.up.isDown) {
                 boy.anims.play('up', true);
-
+                boy.y -= 3;
+                
             } else if (cursor.down.isDown) {
                 boy.anims.play('down', true);
+                boy.y += 3;
 
             }
 
