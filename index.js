@@ -2,14 +2,14 @@
  
 const config = {
     /* Seleccionar Canvas o Web gl*/
-    type: Phaser.AUTO,
+    type: Phaser.CANVAS,
     width: 800,
-    height: 500,
+    height: 600,
     scene: [Game],
     physics: {
-        default: 'arcade',
+        default: 'game',
         arcade: {
-            gravity: { y: 400 },
+            // gravity: { y: 400 },
             debug: false
         }
     }
