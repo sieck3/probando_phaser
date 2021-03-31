@@ -1,4 +1,4 @@
- import { Game } from '/escene/game.js'
+ import { Game } from '/scene/game.js'
  
 const config = {
     /* Seleccionar Canvas o Web gl*/
