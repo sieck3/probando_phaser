@@ -7,7 +7,14 @@ const config = {
     height: 600,
     scene: [Game],
     pixelArt: true,
-    backgroundColor: '#000000'
+    backgroundColor: '#000000',
+    physics: {
+        default: 'arcade',
+        arcade: {
+            // gravity: { y: 200 },
+            debug: true
+        }
+    }
     // physics: {
     //     default: 'game',
     //     arcade: {
