@@ -2,12 +2,12 @@
  
 const config = {
     /* Seleccionar Canvas o Web gl*/
-    type: Phaser.CANVAS,
+    type: Phaser.AUTO,
     width: 800,
     height: 600,
     scene: [Game],
     pixelArt: true,
-    backgroundColor: '#ffffff'
+    backgroundColor: '#000000'
     // physics: {
     //     default: 'game',
     //     arcade: {
