@@ -1,5 +1,6 @@
-let velocidad = 2;
-let frameVelocidad = 16
+let velocidad = 4;
+let frameVelocidad = 16;
+let scale = 1;
 
 let cursor;
 let boy;
@@ -33,8 +34,8 @@ export class Game extends Phaser.Scene {
         boy = this.add.sprite(400, 300 * 2, 'skeleton', 18);
 
         cursor = this.input.keyboard.createCursorKeys();
-        boy.scaleX = 2;
-        boy.scaleY = 2;
+        boy.scaleX = scale;
+        boy.scaleY = scale;
 
         this.cameras.main.startFollow(boy, true);
 
@@ -83,34 +84,51 @@ export class Game extends Phaser.Scene {
             if ((cursor.left.isDown && cursor.down.isDown) || (cursor.left.isDown && cursor.up.isDown) || (cursor.right.isDown && cursor.up.isDown) || (cursor.right.isDown && cursor.down.isDown)) {
                 boy.anims.stop();
             } else {
+                console.log(boy.x);
 
 
                 if (cursor.left.isDown) {
 
                     boy.anims.play('left', true);
+                    if (boy.x <= 10) {
+                        boy.x = 10;
+                    } else {
+                        boy.x -= velocidad;
 
-                    boy.x -= velocidad;
-                    if (limit(boy.x, 800, 600)) {
-                        console.log('true');
                     }
-
                 }
 
                 if (cursor.right.isDown) {
                     boy.anims.play('right', true);
-                    boy.x += velocidad;
+                    if (boy.x >= 1195) {
+                        boy.x = 1195;
+                    } else {
+                        boy.x += velocidad;
+
+                    }
 
                 };
 
                 if (cursor.up.isDown) {
                     boy.anims.play('up', true);
-                    boy.y -= velocidad;
+
+                    if (boy.y <= 30) {
+                        boy.y = 30;
+                    } else {
+
+                        boy.y -= velocidad;
+                    }
 
                 }
 
                 if (cursor.down.isDown) {
                     boy.anims.play('down', true);
-                    boy.y += velocidad;
+                    if (boy.y >= 1150) {
+                        boy.y = 1150;
+                    } else {
+
+                        boy.y += velocidad;
+                    }
 
                 };
 
