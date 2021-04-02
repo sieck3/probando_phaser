@@ -7,9 +7,15 @@ let boy;
 let boy2;
 let bg;
 let bodySwitch = true;
-
+let activado = false;
+let z = 0;
+let skeletos;
 let body = 'skeleton';
 let container;
+let x = 60;
+
+let gfx;
+
 export class Game extends Phaser.Scene {
 
     constructor() {
@@ -24,22 +30,24 @@ export class Game extends Phaser.Scene {
     }
 
     create() {
+
         this.cameras.main.setBounds(0, 0, 1205, 1205);
+
         bg = this.add.image(0, 0, 'background').setOrigin(0);
-        boy2 = this.physics.add.sprite(200, 300 * 2, 'human', 0);
         boy = this.physics.add.sprite(400, 300 * 2, body, 18);
+        boy2 = this.physics.add.sprite(200, 300 * 2, 'human', 0);
         cursor = this.input.keyboard.createCursorKeys();
+
         boy.scaleX = scale;
         boy.scaleY = scale;
 
-        let image1 = this.add.image(0, -30, 'skeleton');
-        let image2 = this.add.image(-40, 30, 'skeleton');
-        let image3 = this.add.image(40, 30, 'skeleton');
-
-        // container = this.add.container(400, 600, [image1, image2, image3]);
-
         this.cameras.main.startFollow(boy, true);
+        skeletos = this.add.group({
+            defaultKey: 'skeleton',
+            maxSize: 5
+        });
 
+  
         this.anims.create({
             key: 'up',
             repeat: -1,
@@ -76,7 +84,6 @@ export class Game extends Phaser.Scene {
         }
         );
 
-
         this.anims.create({
             key: 'npc_stand',
             repeat: -1,
@@ -87,20 +94,48 @@ export class Game extends Phaser.Scene {
         );
 
         boy2.anims.play('npc_stand', true);
+        
 
-        boy.setBounce(1, 1);
-        boy2.setBounce(1, 1);
+        this.physics.add.collider(boy, boy2, function (x) {
+            z++;
+            if (z <= 1) {
 
-        this.physics.add.collider(boy, boy2, function () { console.log('choque') });
+                activado = true;
+            };
+            
+            // x.body.setCollideWorldBounds(true);
+            
 
+        });
+
+        this.input.on('pointerdown', function (event) {
+            // console.log(boy);
+            console.log(boy2);
+            // boy.body.blocked.none = false;
+            // boy2.body.blocked.down = true;
+            
+        });
 
     };
+
     update() {
 
+        if (activado) {
 
+            for (let i = 0; i < skeletos.maxSize; i++) {
+                let qty = i;
+                x = (i * 100);
+                skeletos.get(100 + x, 400);
+            };
+
+            skeletos.children.entries.map((element) => {
+
+                element.anims.play('down', true);
+            });
+            activado = false;
+        };
 
         if (cursor.left.isDown || cursor.right.isDown || cursor.down.isDown || cursor.up.isDown) {
-
 
             if ((cursor.left.isDown && cursor.down.isDown)) {
 
