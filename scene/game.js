@@ -14,6 +14,8 @@ let body = 'skeleton';
 let container;
 let x = 60;
 
+let group;
+
 let gfx;
 
 export class Game extends Phaser.Scene {
@@ -30,7 +32,6 @@ export class Game extends Phaser.Scene {
     }
 
     create() {
-
         this.cameras.main.setBounds(0, 0, 1205, 1205);
 
         bg = this.add.image(0, 0, 'background').setOrigin(0);
@@ -42,12 +43,13 @@ export class Game extends Phaser.Scene {
         boy.scaleY = scale;
 
         this.cameras.main.startFollow(boy, true);
+
         skeletos = this.add.group({
             defaultKey: 'skeleton',
             maxSize: 5
         });
 
-  
+
         this.anims.create({
             key: 'up',
             repeat: -1,
@@ -94,27 +96,44 @@ export class Game extends Phaser.Scene {
         );
 
         boy2.anims.play('npc_stand', true);
-        
+
 
         this.physics.add.collider(boy, boy2, function (x) {
             z++;
             if (z <= 1) {
-
                 activado = true;
             };
-            
-            // x.body.setCollideWorldBounds(true);
-            
+
 
         });
+
 
         this.input.on('pointerdown', function (event) {
             // console.log(boy);
-            console.log(boy2);
             // boy.body.blocked.none = false;
             // boy2.body.blocked.down = true;
-            
+
         });
+        console.log(boy2);
+
+        group = this.physics.add.staticGroup({
+            key: 'skeleton',
+            frameQuantity: 30
+        });
+
+        // Phaser.Actions.PlaceOnRectangle(group.getChildren(), new Phaser.Geom.Rectangle(84, 84, 616, 416));
+        // group.refresh();
+        // boy.setBounce(1, 1).setCollideWorldBounds(true);
+        // let collider = this.physics.add.collider(boy, group, null, function ()
+        // {
+        //     // this.physics.world.removeCollider(collider);
+        // }, this);
+
+        // boy.setVelocity(1, 1).setBounce(1, 1).setCollideWorldBounds(true).setGravityY(0);
+
+        var collider = this.physics.add.collider(boy, boy2, null, function () {
+            console.log("toque");
+        }, this);
 
     };
 
@@ -125,7 +144,7 @@ export class Game extends Phaser.Scene {
             for (let i = 0; i < skeletos.maxSize; i++) {
                 let qty = i;
                 x = (i * 100);
-                skeletos.get(100 + x, 400);
+                // skeletos.get(100 + x, 400);
             };
 
             skeletos.children.entries.map((element) => {
