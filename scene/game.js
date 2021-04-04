@@ -1,5 +1,5 @@
 let velocidad = 4;
-let frameVelocidad = 16;
+let frameVelocidad = 15;
 let scale = 1;
 
 let cursor;
@@ -18,6 +18,55 @@ let group;
 
 let gfx;
 
+let animaciones = (ctx, frameVelocidad) => {
+
+    ctx.anims.create({
+        key: 'up',
+        repeat: -1,
+        frameRate: frameVelocidad,
+        frames: ctx.anims.generateFrameNames('skeleton', { start: 1, end: 8, zeroPad: 0 })
+
+    }
+    );
+
+    ctx.anims.create({
+        key: 'left',
+        repeat: -1,
+        frameRate: frameVelocidad,
+        frames: ctx.anims.generateFrameNames('skeleton', { start: 10, end: 17, zeroPad: 0 })
+
+    }
+    );
+
+    ctx.anims.create({
+        key: 'down',
+        repeat: -1,
+        frameRate: frameVelocidad,
+        frames: ctx.anims.generateFrameNames('skeleton', { start: 19, end: 26, zeroPad: 0 })
+
+    }
+    );
+
+    ctx.anims.create({
+        key: 'right',
+        repeat: -1,
+        frameRate: frameVelocidad,
+        frames: ctx.anims.generateFrameNames('skeleton', { start: 27, end: 35, zeroPad: 0 })
+
+    }
+    );
+
+    ctx.anims.create({
+        key: 'npc_stand',
+        repeat: -1,
+        frameRate: frameVelocidad,
+        frames: ctx.anims.generateFrameNames('human', { start: 23, end: 27, zeroPad: 0 })
+
+    }
+    );
+
+}
+
 export class Game extends Phaser.Scene {
 
     constructor() {
@@ -32,15 +81,26 @@ export class Game extends Phaser.Scene {
     }
 
     create() {
-        this.cameras.main.setBounds(0, 0, 1205, 1205);
+
+        this.cameras.main.setBounds(0, 0, 1920, 1080);
+        this.cameras.main.setZoom(2);
+        // this.cameras.main.centerOn(0, 0);
 
         bg = this.add.image(0, 0, 'background').setOrigin(0);
-        boy = this.physics.add.sprite(400, 300 * 2, body, 18);
-        boy2 = this.physics.add.sprite(200, 300 * 2, 'human', 0);
+
+        boy = this.physics.add.sprite(400, 300, body, 18);
+        boy.body.setSize(boy.width - 45, 42);
+        console.log(boy, 'Boy');
+
+        boy2 = this.physics.add.sprite(200, 300, 'human', 0);
+
         cursor = this.input.keyboard.createCursorKeys();
 
-        boy.scaleX = scale;
-        boy.scaleY = scale;
+        // boy.scaleX = scale;
+        // boy.scaleY = scale;
+
+
+
 
         this.cameras.main.startFollow(boy, true);
 
@@ -48,54 +108,6 @@ export class Game extends Phaser.Scene {
             defaultKey: 'skeleton',
             maxSize: 5
         });
-
-
-        this.anims.create({
-            key: 'up',
-            repeat: -1,
-            frameRate: frameVelocidad,
-            frames: this.anims.generateFrameNames(body, { start: 1, end: 8, zeroPad: 0 })
-
-        }
-        );
-
-        this.anims.create({
-            key: 'left',
-            repeat: -1,
-            frameRate: frameVelocidad,
-            frames: this.anims.generateFrameNames(body, { start: 10, end: 17, zeroPad: 0 })
-
-        }
-        );
-
-        this.anims.create({
-            key: 'down',
-            repeat: -1,
-            frameRate: frameVelocidad,
-            frames: this.anims.generateFrameNames(body, { start: 19, end: 26, zeroPad: 0 })
-
-        }
-        );
-
-        this.anims.create({
-            key: 'right',
-            repeat: -1,
-            frameRate: frameVelocidad,
-            frames: this.anims.generateFrameNames(body, { start: 27, end: 35, zeroPad: 0 })
-
-        }
-        );
-
-        this.anims.create({
-            key: 'npc_stand',
-            repeat: -1,
-            frameRate: 4,
-            frames: this.anims.generateFrameNames('human', { start: 23, end: 27, zeroPad: 0 })
-
-        }
-        );
-
-        boy2.anims.play('npc_stand', true);
 
 
         this.physics.add.collider(boy, boy2, function (x) {
@@ -114,15 +126,14 @@ export class Game extends Phaser.Scene {
             // boy2.body.blocked.down = true;
 
         });
-        console.log(boy2);
+
 
         group = this.physics.add.staticGroup({
             key: 'skeleton',
             frameQuantity: 30
         });
 
-        // Phaser.Actions.PlaceOnRectangle(group.getChildren(), new Phaser.Geom.Rectangle(84, 84, 616, 416));
-        // group.refresh();
+        Phaser.Actions.PlaceOnRectangle(group.getChildren(), new Phaser.Geom.Rectangle(84, 84, 616, 416));
         // boy.setBounce(1, 1).setCollideWorldBounds(true);
         // let collider = this.physics.add.collider(boy, group, null, function ()
         // {
@@ -131,157 +142,76 @@ export class Game extends Phaser.Scene {
 
         // boy.setVelocity(1, 1).setBounce(1, 1).setCollideWorldBounds(true).setGravityY(0);
 
-        var collider = this.physics.add.collider(boy, boy2, null, function () {
+
+        group.refresh();
+
+        boy.setCollideWorldBounds(true);
+
+        let collider = this.physics.add.collider(boy, boy2, null, function () {
             console.log("toque");
         }, this);
+
+        animaciones(this, frameVelocidad);
+        boy2.anims.play('npc_stand', true);
+
+        boy.setCollideWorldBounds(true);
+
+
+        this.physics.add.collider(boy, group);
+        this.physics.add.collider(boy2, group);
+        boy2.setBounce(0.7,0.7);
+        boy.body.offset.y = 17;
 
     };
 
     update() {
+        const speed = 100;
 
-        if (activado) {
+        // if (activado) {
 
-            for (let i = 0; i < skeletos.maxSize; i++) {
-                let qty = i;
-                x = (i * 100);
-                // skeletos.get(100 + x, 400);
-            };
+        //     for (let i = 0; i < skeletos.maxSize; i++) {
+        //         let qty = i;
+        //         x = (i * 100);
+        //         skeletos.get(100 + x, 400);
+        //     };
 
-            skeletos.children.entries.map((element) => {
+        //     skeletos.children.entries.map((element) => {
 
-                element.anims.play('down', true);
-            });
-            activado = false;
-        };
+        //         element.anims.play('down', true);
+        //     });
+        //     activado = false;
+        // };
+        if (!cursor || !boy) {
 
-        if (cursor.left.isDown || cursor.right.isDown || cursor.down.isDown || cursor.up.isDown) {
+            return;
 
-            if ((cursor.left.isDown && cursor.down.isDown)) {
-
-                boy.anims.play('down', true);
-                if (boy.y >= 1150) {
-                    boy.y = 1150;
-                } else {
-
-                    boy.y += velocidad;
-                }
-
-                if (boy.x <= 10) {
-                    boy.x = 10;
-                } else {
-                    boy.x -= velocidad;
-
-                }
-
-
-
-            } else if ((cursor.left.isDown && cursor.up.isDown)) {
-                boy.anims.play('up', true);
-
-                if (boy.y <= 30) {
-                    boy.y = 30;
-                } else {
-
-                    boy.y -= velocidad;
-                }
-                if (boy.x <= 10) {
-                    boy.x = 10;
-                } else {
-                    boy.x -= velocidad;
-
-                }
-
-
-            } else if ((cursor.right.isDown && cursor.up.isDown)) {
-                boy.anims.play('up', true);
-
-
-                if (boy.y <= 30) {
-                    boy.y = 30;
-                } else {
-
-                    boy.y -= velocidad;
-                }
-
-                if (boy.x >= 1195) {
-                    boy.x = 1195;
-                } else {
-                    boy.x += velocidad;
-
-                }
-            } else if ((cursor.right.isDown && cursor.down.isDown)) {
-                boy.anims.play('down', true);
-
-                if (boy.x >= 1195) {
-                    boy.x = 1195;
-                } else {
-                    boy.x += velocidad;
-
-                }
-                if (boy.y >= 1150) {
-                    boy.y = 1150;
-                } else {
-
-                    boy.y += velocidad;
-                }
-
-            } else {
-
-
-
-                if (cursor.right.isDown) {
-                    boy.anims.play('right', true);
-                    if (boy.x >= 1195) {
-                        boy.x = 1195;
-                    } else {
-                        boy.x += velocidad;
-
-                    }
-
-                };
-
-                if (cursor.up.isDown) {
-                    boy.anims.play('up', true);
-
-                    if (boy.y <= 30) {
-                        boy.y = 30;
-                    } else {
-
-                        boy.y -= velocidad;
-                    }
-
-                }
-
-
-
-                if (cursor.left.isDown) {
-
-                    boy.anims.play('left', true);
-                    if (boy.x <= 10) {
-                        boy.x = 10;
-                    } else {
-                        boy.x -= velocidad;
-
-                    }
-                }
-
-                if (cursor.down.isDown) {
-                    boy.anims.play('down', true);
-                    if (boy.y >= 1150) {
-                        boy.y = 1150;
-                    } else {
-
-                        boy.y += velocidad;
-                    }
-
-                };
-
-
-            }
-        } else {
-
-            boy.anims.stop();
         }
+
+
+        if (cursor.left?.isDown) {
+            boy.anims.play('left', true);
+            boy.setVelocity(-speed, 0);
+
+            // boy.body.offset.x = 22;
+        } else if (cursor.right?.isDown) {
+            boy.anims.play('right', true);
+            boy.setVelocity(speed, 0);
+            // boy.body.offset.x = 22;
+
+        } else if (cursor.up?.isDown) {
+            boy.anims.play('up', true);
+            boy.setVelocity(0, -speed);
+        } else if (cursor.down?.isDown) {
+            boy.anims.play('down', true);
+            boy.setVelocity(0, speed);
+
+        } else {
+            boy.setVelocity(0, 0);
+            boy.stop();
+        }
+
+
+
 
 
 
