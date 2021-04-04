@@ -1,12 +1,8 @@
+const app = require('./app');
 
-const express = require('express');
-const app = express();
-const morgan = require('morgan');
+async function main() {
+    await app.listen(app.get('port'));
+    console.log('Server on port', app.get('port'));
+}
 
-app.use(morgan('dev'));
-
-app.use(express.static('public'));
-
-app.listen(3000,()=>{
-    console.log('Server on port 3000');
-})
+main();
