@@ -6,6 +6,7 @@ let cursor;
 let boy;
 let boy2;
 let bg;
+let bola_fuego;
 let bodySwitch = true;
 let activado = false;
 let z = 0;
@@ -76,6 +77,7 @@ export class Game extends Phaser.Scene {
     preload() {
         this.load.spritesheet('human', 'img/hombre_sprite_poder.png', { frameWidth: 64, frameHeight: 64 }, 8);
         this.load.spritesheet('skeleton', 'img/huesos_sprite576×256.png', { frameWidth: 64, frameHeight: 64 }, 8);
+        this.load.spritesheet('bola_fuego', 'img/bola_fuego.gif', { frameWidth: 64, frameHeight: 64 }, 8);
         this.load.image('background', 'img/fondo.png');
 
     }
@@ -86,11 +88,12 @@ export class Game extends Phaser.Scene {
         this.cameras.main.setZoom(2);
         // this.cameras.main.centerOn(0, 0);
 
-        bg = this.add.image(0, 0, 'background').setOrigin(0);
+        // bg = this.add.image(0, 0, 'background').setOrigin(0);
+        // bola_fuego = this.add.image(400, 400, 'bola_fuego').setOrigin(0);
 
         boy = this.physics.add.sprite(400, 300, body, 18);
         boy.body.setSize(boy.width - 45, 42);
-        console.log(boy, 'Boy');
+        // console.log(boy, 'Boy');
 
         boy2 = this.physics.add.sprite(200, 300, 'human', 0);
 
@@ -159,40 +162,83 @@ export class Game extends Phaser.Scene {
 
         this.physics.add.collider(boy, group);
         this.physics.add.collider(boy2, group);
-        boy2.setBounce(0.7,0.7);
+        boy2.setBounce(0.5, 0.5);
         boy.body.offset.y = 17;
 
     };
 
     update() {
-        const speed = 100;
+        const speed = 300;
 
-        // if (activado) {
+        if (activado) {
 
-        //     for (let i = 0; i < skeletos.maxSize; i++) {
-        //         let qty = i;
-        //         x = (i * 100);
-        //         skeletos.get(100 + x, 400);
-        //     };
+            // for (let i = 0; i < skeletos.maxSize; i++) {
+            //     let qty = i;
+            //     x = (i * 100);
+            //     skeletos.get(100 + x, 400);
+            // };
 
-        //     skeletos.children.entries.map((element) => {
+            // skeletos.children.entries.map((element) => {
 
-        //         element.anims.play('down', true);
-        //     });
-        //     activado = false;
-        // };
+            //     element.anims.play('down', true);
+            // });
+            // activado = false;
+            // console.log(
+            //     'Son tocados jaimito'
+            // );
+        };
         if (!cursor || !boy) {
 
             return;
 
         }
 
+        if (cursor.right?.isDown && cursor.down?.isDown) {
 
-        if (cursor.left?.isDown) {
+
+            boy.setVelocity(speed, speed);
+            // boy.anims.play('down', true);
+            boy.anims.play('right', true);
+
+
+         
+
+        } else if (cursor.right?.isDown && cursor.up?.isDown) {
+
+
+            boy.setVelocity(speed, -speed);
+            boy.anims.play('right', true);
+
+
+
+        } else if (cursor.left?.isDown && cursor.up?.isDown) {
+
+
+            boy.setVelocity(-speed, -speed);
+            boy.anims.play('left', true);
+
+
+
+        } else if (cursor.left?.isDown && cursor.up?.isDown) {
+
+            boy.setVelocity(-speed, -speed);
+            boy.anims.play('left', true);
+
+
+        } else if (cursor.left?.isDown && cursor.down?.isDown) {
+
+            boy.setVelocity(-speed, speed);
+            boy.anims.play('left', true);
+
+
+
+        } else if (cursor.left?.isDown) {
             boy.anims.play('left', true);
             boy.setVelocity(-speed, 0);
+            // boy.setVelocity(-speed, 0);
 
             // boy.body.offset.x = 22;
+
         } else if (cursor.right?.isDown) {
             boy.anims.play('right', true);
             boy.setVelocity(speed, 0);
