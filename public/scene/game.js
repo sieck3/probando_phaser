@@ -117,7 +117,7 @@ export class Game extends Phaser.Scene {
 
 
         this.cameras.main.setBounds(0, 0, 1920, 1080);
-        this.cameras.main.setZoom(2);
+        this.cameras.main.setZoom(3);
         // let container = this.add.container(0, 0).setName('conty');
         // // ts = this.add.tileSprite(0, 0, 1920, 1080, 'background');
         // this.cameras.main.centerOn(0, 0);
