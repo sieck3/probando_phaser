@@ -99,29 +99,39 @@ export class Game extends Phaser.Scene {
         this.load.spritesheet('sword_skeleton', 'img/sword_skeleton.png', { frameWidth: 64, frameHeight: 64 }, 8);
         this.load.spritesheet('texture_stone', 'img/textureStone.png', { frameWidth: 64, frameHeight: 64 }, 8);
         this.load.image('tiles', 'img/sheet.png');
-        this.load.tilemapCSV('pared', 'img/bg._pared.csv');
-        this.load.tilemapCSV('piso', 'img/bg._piso.csv');
+        this.load.tilemapCSV('piso', 'img/bg._piso_piso.csv');
+        this.load.tilemapCSV('pared', 'img/bg._piso_block.csv');
+        // this.load.image('rock', 'img/rock.png');
     }
 
     create() {
 
 
 
-        let pared = this.make.tilemap({ key: 'pared', tileWidth: 32, tileHeight: 32 });
+
         let piso = this.make.tilemap({ key: 'piso', tileWidth: 32, tileHeight: 32 });
+        let pared = this.make.tilemap({ key: 'pared', tileWidth: 32, tileHeight: 32 });
 
         const tileset = pared.addTilesetImage('tiles', null, 32, 32, 0, 0);
-
         piso.createLayer(0, tileset, 0, 0);
-        pared.createLayer(0, tileset, 0, 0).setVisible(false);
+        pared.createLayer(0, tileset, 0, 0);
+
+
+        // pared.createLayer(0, tileset, 0, 0).setVisible(false);
+
+        // piso_collision.setCollisionByProperty({ collider: true });
+
+
+
+
 
 
         this.cameras.main.setBounds(0, 0, 1920, 1080);
-        this.cameras.main.setZoom(3);
+        this.cameras.main.setZoom(2.5);
         // let container = this.add.container(0, 0).setName('conty');
         // // ts = this.add.tileSprite(0, 0, 1920, 1080, 'background');
         // this.cameras.main.centerOn(0, 0);
-        boy = this.physics.add.sprite(400, 300, body, 18);
+        boy = this.physics.add.sprite(400,200, body, 18);
         boy.body.setSize(boy.width - 45, 42);
         boy2 = this.physics.add.sprite(200, 300, 'human', 0);
         // console.log(boy, 'Boy');
@@ -129,22 +139,30 @@ export class Game extends Phaser.Scene {
         cursor = this.input.keyboard.createCursorKeys();
         boy.scaleX = scale;
         boy.scaleY = scale;
+
+
         this.cameras.main.startFollow(boy, true);
         // skeletos = this.add.group({
         //     defaultKey: 'skeleton',
         //     maxSize: 5
         // });
+
+
         this.physics.add.collider(boy, boy2, function (x) {
             console.log('touch');
-            if(cursor.space?.isDown){
+            if (cursor.space?.isDown) {
                 console.log('hola');
             }
 
         });
 
-        this.input.on('pointerdown', function (event) {
+        // this.input.on('pointerdown', function (event) {
 
-        });
+        // });
+
+        // let collider = this.physics.add.collider(boy, piso_collision, null, function () {
+        //     // console.log('CASA ');
+        // }, this);
 
         // Phaser.Actions.PlaceOnRectangle(group.getChildren(), new Phaser.Geom.Rectangle(100, 100, 400, 400));
         // boy.setBounce(1, 1).setCollideWorldBounds(true);
@@ -156,17 +174,39 @@ export class Game extends Phaser.Scene {
         // group.refresh();
 
         animaciones(this, frameVelocidad, 'skeleton');
+
+
         boy2.anims.play('npc_stand', true);
+
         boy.setCollideWorldBounds(true);
 
-        this.physics.add.collider(boy,pared,function(){
+        this.physics.add.collider(boy, pared, function () {
             console.log('OLOCO');
         });
         // boy2.setBounce(0.5, 0.5);
         boy.body.offset.y = 17;
 
         boy2.body.setImmovable(true);
+
         hitBoxGeneral(boy2);
+
+        group = this.physics.add.staticGroup({
+            key: 'skeleton',
+            frameQuantity: 20,
+            
+        })
+        group.setVisible(false);
+
+        group.setXY(0.5,0.5);
+
+
+        console.log(group)
+
+
+        Phaser.Actions.PlaceOnRectangle(group.getChildren(), new Phaser.Geom.Rectangle(240, 35, 355, 300));
+        group.refresh();
+
+        this.physics.add.collider(boy, group);
 
     };
 
